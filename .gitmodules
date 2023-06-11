@@ -1,0 +1,3 @@
+[submodule "gazebo_ros_optical_flow/external/PX4-OpticalFlow"]
+	path = gazebo_ros_optical_flow/external/PX4-OpticalFlow
+	url = https://github.com/PX4/PX4-OpticalFlow.git
