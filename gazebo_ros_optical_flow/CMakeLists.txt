@@ -5,7 +5,6 @@ find_package(catkin REQUIRED COMPONENTS
   gazebo_ros
   gazebo_plugins
   gazebo_dev
-  message_generation
   gazebo_msgs
   roscpp
   rospy
@@ -15,20 +14,13 @@ find_package(catkin REQUIRED COMPONENTS
   tf2_ros
   image_transport
   cv_bridge
+  gazebo_ros_optical_flow_msgs
 )
 
 find_package(gazebo REQUIRED)
 find_package(Boost REQUIRED COMPONENTS thread)
 find_package(OpenCV COMPONENTS core highgui REQUIRED)
 
-add_message_files(
-  FILES
-  OpticalFlow.msg
-)
-generate_messages(
-  DEPENDENCIES
-  std_msgs
-)
 catkin_package(
    INCLUDE_DIRS include
 #  LIBRARIES gazebo_ros_optical_flow

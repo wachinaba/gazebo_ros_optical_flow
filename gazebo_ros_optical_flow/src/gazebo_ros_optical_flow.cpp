@@ -6,7 +6,7 @@
 #include <gazebo/sensors/CameraSensor.hh>
 #include <gazebo/sensors/SensorTypes.hh>
 
-#include <gazebo_ros_optical_flow/OpticalFlow.h>
+#include <gazebo_ros_optical_flow_msgs/OpticalFlow.h>
 
 #include <math.h>
 #include <string>
@@ -120,7 +120,7 @@ namespace gazebo
         nh_ = ros::NodeHandle("/");
 
         //init ros msg publisher
-        opticalFlowRosPub_ = nh_.advertise<gazebo_ros_optical_flow::OpticalFlow>(rosTopicName, 1);
+        opticalFlowRosPub_ = nh_.advertise<gazebo_ros_optical_flow_msgs::OpticalFlow>(rosTopicName, 1);
     }
 
     void GazeboRosOpticalFlowPlugin::OnNewFrame(const unsigned char *_image,

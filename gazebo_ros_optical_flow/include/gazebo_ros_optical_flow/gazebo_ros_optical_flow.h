@@ -23,7 +23,7 @@
 #include "flow_opencv.hpp"
 #include "flow_px4.hpp"
 
-#include "gazebo_ros_optical_flow/OpticalFlow.h"
+#include "gazebo_ros_optical_flow_msgs/OpticalFlow.h"
 
 using namespace cv;
 using namespace std;
@@ -66,7 +66,7 @@ namespace gazebo
             // ros OpticalFlow message node handler and publishers
             ros::NodeHandle nh_;
             ros::Publisher opticalFlowRosPub_;
-            gazebo_ros_optical_flow::OpticalFlow opticalFlowRosMsg_;
+            gazebo_ros_optical_flow_msgs::OpticalFlow opticalFlowRosMsg_;
 
             float hfov_;
             int dt_us_;
