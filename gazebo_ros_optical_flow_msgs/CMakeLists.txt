@@ -9,7 +9,6 @@ project(gazebo_ros_optical_flow_msgs)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   message_generation
-  message_runtime
   roscpp
   std_msgs
 )
@@ -115,7 +114,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES gazebo_ros_optical_flow_msgs
-#  CATKIN_DEPENDS message_generation message_runtime roscpp std_msgs
+ CATKIN_DEPENDS message_runtime roscpp std_msgs
 #  DEPENDS system_lib
 )
 
