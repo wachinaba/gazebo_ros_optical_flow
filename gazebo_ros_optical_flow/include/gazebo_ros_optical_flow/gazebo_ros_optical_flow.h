@@ -23,7 +23,7 @@
 #include "flow_opencv.hpp"
 #include "flow_px4.hpp"
 
-#include "gazebo_ros_optical_flow_msgs/OpticalFlow.h"
+#include "mavros_msgs/OpticalFlowRad.h"
 
 using namespace cv;
 using namespace std;
@@ -33,49 +33,52 @@ using namespace std;
 
 namespace gazebo
 {
-    class GAZEBO_VISIBLE GazeboRosOpticalFlowPlugin : public SensorPlugin
-    {
-        public:
-            GazeboRosOpticalFlowPlugin();
-            ~GazeboRosOpticalFlowPlugin();
+class GAZEBO_VISIBLE GazeboRosOpticalFlowPlugin : public SensorPlugin
+{
+public:
+  GazeboRosOpticalFlowPlugin();
+  ~GazeboRosOpticalFlowPlugin();
 
-            void Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf);
-            virtual void OnNewFrame(const unsigned char *_image,
-                                    unsigned int _width, unsigned int _height,
-                                    unsigned int _depth, const std::string &_format);
-            void ImuCallback(ConstIMUPtr& _imu);
+  void Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf);
+  virtual void OnNewFrame(const unsigned char* _image, unsigned int _width, unsigned int _height, unsigned int _depth,
+                          const std::string& _format);
+  void ImuCallback(ConstIMUPtr& _imu);
 
-        protected:
-            unsigned int width, height, depth;
-            std::string format;
-            sensors::CameraSensorPtr parentSensor;
-            rendering::CameraPtr camera;
-            physics::WorldPtr world;
+protected:
+  unsigned int width, height, depth;
+  std::string format;
+  sensors::CameraSensorPtr parentSensor;
+  rendering::CameraPtr camera;
+  physics::WorldPtr world;
 
-        private:
-            event::ConnectionPtr newFrameConnection;
-            transport::PublisherPtr opticalFlow_pub_;
-            transport::NodePtr node_handle_;
-            transport::SubscriberPtr imuSub_;
-            ignition::math::Vector3d opticalFlow_rate;
-            std::string namespace_;
-            std::string gyro_sub_topic_;
-            //OpticalFlowOpenCV *optical_flow_;
-            OpticalFlowPX4 *optical_flow_;
+private:
+  event::ConnectionPtr newFrameConnection;
+  transport::PublisherPtr opticalFlow_pub_;
+  transport::NodePtr node_handle_;
+  transport::SubscriberPtr imuSub_;
+  ignition::math::Vector3d opticalFlow_rate;
+  std::string namespace_;
+  std::string gyro_sub_topic_;
+  // OpticalFlowOpenCV *optical_flow_;
+  OpticalFlowPX4* optical_flow_;
 
-            // ros OpticalFlow message node handler and publishers
-            ros::NodeHandle nh_;
-            ros::Publisher opticalFlowRosPub_;
-            gazebo_ros_optical_flow_msgs::OpticalFlow opticalFlowRosMsg_;
+  // ros OpticalFlow message node handler and publishers
+  ros::NodeHandle nh_;
+  ros::Publisher opticalFlowRosPub_;
+  mavros_msgs::OpticalFlowRad opticalFlowRosMsg_;
 
-            float hfov_;
-            int dt_us_;
-            int output_rate_;
-            float focal_length_;
-            double first_frame_time_;
-            uint32_t frame_time_us_;
-            bool has_gyro_;
-    };
-}
+  float hfov_;
+  int dt_us_;
+  int output_rate_;
+  float focal_length_;
+  double first_frame_time_;
+  uint32_t frame_time_us_;
+  bool has_gyro_;
+
+  int search_size_;
+  int flow_feature_threshold_;
+  int flow_value_threshold_;
+};
+}  // namespace gazebo
 
 #endif
