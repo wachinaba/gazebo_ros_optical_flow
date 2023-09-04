@@ -15,6 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
   image_transport
   cv_bridge
   gazebo_ros_optical_flow_msgs
+  optical_flow_msgs
 )
 
 find_package(gazebo REQUIRED)
@@ -24,7 +25,7 @@ find_package(OpenCV COMPONENTS core highgui REQUIRED)
 catkin_package(
    INCLUDE_DIRS include
 #  LIBRARIES gazebo_ros_optical_flow
-   CATKIN_DEPENDS gazebo_ros roscpp std_msgs message_runtime gazebo_plugins
+   CATKIN_DEPENDS gazebo_ros roscpp std_msgs message_runtime gazebo_plugins optical_flow_msgs
 #  DEPENDS system_lib
 )
 
@@ -54,3 +55,4 @@ link_directories(
 
 add_library(${PROJECT_NAME} src/gazebo_ros_optical_flow.cpp)
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES} ${OpticalFlow_LIBS})
+add_dependencies(${PROJECT_NAME} ${catkin_EXPORTED_TARGETS})
