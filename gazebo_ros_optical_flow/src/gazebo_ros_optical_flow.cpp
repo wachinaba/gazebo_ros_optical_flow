@@ -200,8 +200,8 @@ void GazeboRosOpticalFlowPlugin::OnNewFrame(const unsigned char* _image, unsigne
 
   opticalFlowDeltaMsg_.header.stamp = ros::Time::now();
   opticalFlowDeltaMsg_.integration_time_us = dt_us_;
-  opticalFlowDeltaMsg_.delta_px = int(flow_delta_x);
-  opticalFlowDeltaMsg_.delta_py = int(flow_delta_y);
+  opticalFlowDeltaMsg_.delta_px = flow_delta_x;
+  opticalFlowDeltaMsg_.delta_py = flow_delta_y;
   opticalFlowDeltaMsg_.surface_quality = quality;
 
   opticalFlowRosPub_.publish(opticalFlowRosMsg_);
