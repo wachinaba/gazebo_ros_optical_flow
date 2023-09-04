@@ -24,6 +24,7 @@
 #include "flow_px4.hpp"
 
 #include "mavros_msgs/OpticalFlowRad.h"
+#include <optical_flow_msgs/OpticalFlowDelta.h>
 
 using namespace cv;
 using namespace std;
@@ -65,7 +66,10 @@ private:
   // ros OpticalFlow message node handler and publishers
   ros::NodeHandle nh_;
   ros::Publisher opticalFlowRosPub_;
+  ros::Publisher opticalFlowDeltaPub_;
+
   mavros_msgs::OpticalFlowRad opticalFlowRosMsg_;
+  optical_flow_msgs::OpticalFlowDelta opticalFlowDeltaMsg_;
 
   float hfov_;
   int dt_us_;

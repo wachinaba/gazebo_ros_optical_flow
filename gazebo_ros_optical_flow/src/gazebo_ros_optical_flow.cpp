@@ -156,6 +156,7 @@ void GazeboRosOpticalFlowPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPt
 
   // init ros msg publisher
   opticalFlowRosPub_ = nh_.advertise<mavros_msgs::OpticalFlowRad>(rosTopicName, 1);
+  opticalFlowDeltaPub_ = nh_.advertise<optical_flow_msgs::OpticalFlowDelta>(rosTopicName + "_delta", 1);
 }
 
 void GazeboRosOpticalFlowPlugin::OnNewFrame(const unsigned char* _image, unsigned int _width, unsigned int _height,
@@ -168,8 +169,12 @@ void GazeboRosOpticalFlowPlugin::OnNewFrame(const unsigned char* _image, unsigne
 
   float flow_x_ang = 0.0f;
   float flow_y_ang = 0.0f;
+  float flow_delta_x = 0;
+  float flow_delta_y = 0;
+
   // calculate angular flow
-  int quality = optical_flow_->calcFlow((uchar*)_image, frame_time_us_, dt_us_, flow_x_ang, flow_y_ang);
+  int quality = optical_flow_->calcFlowWithDelta((uchar*)_image, frame_time_us_, dt_us_, flow_x_ang, flow_y_ang,
+                                                 flow_delta_x, flow_delta_y);
 
   opticalFlowRosMsg_.header.stamp = ros::Time::now();
   opticalFlowRosMsg_.integration_time_us = dt_us_;
@@ -193,7 +198,14 @@ void GazeboRosOpticalFlowPlugin::OnNewFrame(const unsigned char* _image, unsigne
   opticalFlowRosMsg_.time_delta_distance_us = 0;
   opticalFlowRosMsg_.distance = 0.0f;
 
+  opticalFlowDeltaMsg_.header.stamp = ros::Time::now();
+  opticalFlowDeltaMsg_.integration_time_us = dt_us_;
+  opticalFlowDeltaMsg_.delta_px = int(flow_delta_x);
+  opticalFlowDeltaMsg_.delta_py = int(flow_delta_y);
+  opticalFlowDeltaMsg_.surface_quality = quality;
+
   opticalFlowRosPub_.publish(opticalFlowRosMsg_);
+  opticalFlowDeltaPub_.publish(opticalFlowDeltaMsg_);
 }
 
 void GazeboRosOpticalFlowPlugin::ImuCallback(ConstIMUPtr& _imu)
