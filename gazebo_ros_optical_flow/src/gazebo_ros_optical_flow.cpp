@@ -136,6 +136,16 @@ void GazeboRosOpticalFlowPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPt
     imuSub_ = node_handle_->Subscribe(topicName, &GazeboRosOpticalFlowPlugin::ImuCallback, this);
   }
 
+  if (_sdf->HasElement("topicName"))
+    ros_topic_name_ = _sdf->GetElement("topicName")->Get<std::string>();
+  else
+    ros_topic_name_ = "/optical_flow";
+
+  if (_sdf->HasElement("deltaTopicName"))
+    ros_delta_topic_name_ = _sdf->GetElement("deltaTopicName")->Get<std::string>();
+  else
+    ros_delta_topic_name_ = "/optical_flow_delta";
+
   string topicName = "~/" + scopedName + "/optical_flow";
   boost::replace_all(topicName, "::", "/");
 
@@ -149,14 +159,11 @@ void GazeboRosOpticalFlowPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPt
   optical_flow_ = new OpticalFlowPX4(focal_length_, focal_length_, output_rate_, this->width, this->height,
                                      search_size_, flow_feature_threshold_, flow_value_threshold_);
 
-  string rosTopicName = namespace_ + _sensor->ParentName() + "/optical_flow";
-  boost::replace_all(rosTopicName, "::", "/");
-
   nh_ = ros::NodeHandle("/");
 
   // init ros msg publisher
-  opticalFlowRosPub_ = nh_.advertise<mavros_msgs::OpticalFlowRad>(rosTopicName, 1);
-  opticalFlowDeltaPub_ = nh_.advertise<optical_flow_msgs::OpticalFlowDelta>(rosTopicName + "_delta", 1);
+  opticalFlowRosPub_ = nh_.advertise<mavros_msgs::OpticalFlowRad>(ros_topic_name_, 1);
+  opticalFlowDeltaPub_ = nh_.advertise<optical_flow_msgs::OpticalFlowDelta>(ros_delta_topic_name_, 1);
 }
 
 void GazeboRosOpticalFlowPlugin::OnNewFrame(const unsigned char* _image, unsigned int _width, unsigned int _height,

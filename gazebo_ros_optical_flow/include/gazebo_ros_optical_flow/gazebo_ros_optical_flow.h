@@ -68,6 +68,9 @@ private:
   ros::Publisher opticalFlowRosPub_;
   ros::Publisher opticalFlowDeltaPub_;
 
+  std::string ros_topic_name_;
+  std::string ros_delta_topic_name_;
+
   mavros_msgs::OpticalFlowRad opticalFlowRosMsg_;
   optical_flow_msgs::OpticalFlowDelta opticalFlowDeltaMsg_;
 
