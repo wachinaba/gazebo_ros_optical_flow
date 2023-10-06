@@ -146,6 +146,11 @@ void GazeboRosOpticalFlowPlugin::Load(sensors::SensorPtr _sensor, sdf::ElementPt
   else
     ros_delta_topic_name_ = "/optical_flow_delta";
 
+  if (_sdf->HasElement("frameId"))
+    ros_frame_id_ = _sdf->GetElement("frameId")->Get<std::string>();
+  else
+    ros_frame_id_ = "/flow_frame";
+
   string topicName = "~/" + scopedName + "/optical_flow";
   boost::replace_all(topicName, "::", "/");
 
@@ -187,6 +192,7 @@ void GazeboRosOpticalFlowPlugin::OnNewFrame(const unsigned char* _image, unsigne
                                                  flow_delta_x, flow_delta_y);
 
   opticalFlowRosMsg_.header.stamp = ros::Time::now();
+  opticalFlowRosMsg_.header.frame_id = ros_frame_id_;
   opticalFlowRosMsg_.integration_time_us = dt_us_;
   opticalFlowRosMsg_.integrated_x = flow_x_ang;
   opticalFlowRosMsg_.integrated_y = flow_y_ang;
@@ -209,6 +215,7 @@ void GazeboRosOpticalFlowPlugin::OnNewFrame(const unsigned char* _image, unsigne
   opticalFlowRosMsg_.distance = 0.0f;
 
   opticalFlowDeltaMsg_.header.stamp = ros::Time::now();
+  opticalFlowDeltaMsg_.header.frame_id = ros_frame_id_;
   opticalFlowDeltaMsg_.integration_time_us = dt_us_;
   opticalFlowDeltaMsg_.delta_px = flow_delta_x;
   opticalFlowDeltaMsg_.delta_py = flow_delta_y;

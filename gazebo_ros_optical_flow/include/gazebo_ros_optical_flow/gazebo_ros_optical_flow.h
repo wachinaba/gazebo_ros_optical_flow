@@ -70,6 +70,7 @@ private:
 
   std::string ros_topic_name_;
   std::string ros_delta_topic_name_;
+  std::string ros_frame_id_;
 
   mavros_msgs::OpticalFlowRad opticalFlowRosMsg_;
   optical_flow_msgs::OpticalFlowDelta opticalFlowDeltaMsg_;
