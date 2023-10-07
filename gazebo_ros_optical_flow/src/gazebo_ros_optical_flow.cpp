@@ -177,9 +177,6 @@ void GazeboRosOpticalFlowPlugin::OnNewFrame(const unsigned char* _image, unsigne
   _image = this->camera->ImageData(0);
   double frame_time = this->world->SimTime().Double();
 
-  // debug: print frame time
-  printf("frame time: %f\n", frame_time);
-
   frame_time_us_ = (frame_time - first_frame_time_) * 1e6;  // since start
 
   float flow_x_ang = 0.0f;
